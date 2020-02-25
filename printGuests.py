@@ -3,6 +3,12 @@ import re
 import subprocess
 import logging
 
+'''
+#todo
+* add argparse 
+* opt selector 
+'''
+
 logging.basicConfig(level=logging.DEBUG, format=' %(asctime)s - %(levelname)s- %(message)s')
 
 def main():
