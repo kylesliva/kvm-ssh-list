@@ -37,7 +37,6 @@ def match(ip):
 def printOptions(opts):
     selectionIndex = -1 
     for num, item in enumerate(opts):
-        logging.debug(num)
         print(f"{num}) {socket.gethostbyaddr(item)[0]} ")
     selectionIndex = int(input("Please select an option from the above list: "))
     logging.debug(f"selection index: {selectionIndex}")
@@ -46,11 +45,6 @@ def printOptions(opts):
         output = opts[selectionIndex]
     except Exception as e:
         print("please enter a valid list index")
-    
-    logOutput = (
-                f"ip: {output}\n"
-                f"hostname: {socket.gethostbyaddr(output)}"
-    )
     
     logging.debug(
                 f"ip: {output}\n"
