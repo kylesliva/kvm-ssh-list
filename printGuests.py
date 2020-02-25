@@ -19,20 +19,13 @@ def main():
     # pull out arp cache from shell. is there a better way to use socket for this?
     arpCache = str(subprocess.check_output(["arp", "-a"]))
     logging.debug(arpCache)
-    logging.debug(type(arpCache))
     logging.debug(re.findall("192\.168\.122\.\d{1,3}", arpCache))
     
     opts = re.findall("192\.168\.122\.\d{1,3}", arpCache) 
     
     connectHost(printOptions(opts))
 
-#checks for KVM IP
-def match(ip):
-    test = re.compile("192\.168\.122\.\d{1,3}")
 
-    if test.match(ip):
-        return True
-    return False
 
 def printOptions(opts):
     selectionIndex = -1 
@@ -55,10 +48,6 @@ def printOptions(opts):
 #initiates SSH connection to ip
 def connectHost(ip):
     subprocess.run(["ssh", ip])
-        
-
-
-    
 
 if __name__ == '__main__':
     main()
