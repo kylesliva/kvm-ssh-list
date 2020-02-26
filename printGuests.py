@@ -3,6 +3,7 @@ import re
 import subprocess
 import logging
 import socket
+import argparse
 
 '''
 #todo
@@ -11,6 +12,7 @@ import socket
 * opt selector 
 * exception handling
 * more verbose logging
+* convert main method to a strict flow control method
 '''
 
 logging.basicConfig(level=logging.DEBUG, format=' %(asctime)s - %(levelname)s- %(message)s')
@@ -29,11 +31,12 @@ def main():
 
 def printOptions(opts):
     selectionIndex = -1 
+
     for num, item in enumerate(opts):
         print(f"{num}) {socket.gethostbyaddr(item)[0]} ")
     selectionIndex = int(input("Please select an option from the above list: "))
     logging.debug(f"selection index: {selectionIndex}")
-    
+
     try:
         output = opts[selectionIndex]
     except Exception as e:
@@ -43,6 +46,7 @@ def printOptions(opts):
                 f"ip: {output}\n"
                 f"hostname: {socket.gethostbyaddr(output)[0]}"
     )
+
     return output
 
 #initiates SSH connection to ip
