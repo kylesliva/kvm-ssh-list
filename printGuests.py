@@ -25,15 +25,23 @@ def main():
     
     opts = re.findall("192\.168\.122\.\d{1,3}", arpCache) 
     
-    connectHost(printOptions(opts))
+    if not opts:
+        print("error: no KVM hosts running on machine")
+    else:
+        connectHost(printOptions(opts))
 
 
 
 def printOptions(opts):
-    selectionIndex = -1 
+    hostname = ""
 
     for num, item in enumerate(opts):
-        print(f"{num}) {socket.gethostbyaddr(item)[0]} ")
+        try:
+            hostname = f"{socket.gethostbyaddr(item)[0]}"
+        except socket.herror:
+            logging.info("Warning: cannot resolve KVM guest addresses. Is 192.168.122.1 the primary nameserver?")
+            hostname = item
+        print(f"{num}) {hostname}")
     selectionIndex = int(input("Please select an option from the above list: "))
     logging.debug(f"selection index: {selectionIndex}")
 
@@ -41,10 +49,12 @@ def printOptions(opts):
         output = opts[selectionIndex]
     except Exception as e:
         print("please enter a valid list index")
+
     
     logging.debug(
                 f"ip: {output}\n"
-                f"hostname: {socket.gethostbyaddr(output)[0]}"
+                f"hostname: {hostname}"
+
     )
 
     return output
