@@ -24,6 +24,9 @@ def main():
     arpCache = str(subprocess.check_output(["arp", "-a"]))
     logging.debug(arpCache)
     logging.debug(re.findall("192\.168\.122\.\d{1,3}", arpCache))
+
+    # Right now this will match any number up to 999, this should be fixed.
+    # Can't assume arp will always return a valid IP
     
     opts = re.findall("192\.168\.122\.\d{1,3}", arpCache) 
     
