@@ -10,7 +10,8 @@ Here are some links I used to set that up (orgnaize that info later)
 
 ## To-do
 * add argparse 
-    * for setting log level
+    * for setting log level [x]
+    * for changing app behavior
 * opt selector 
 * exception handling
 * more verbose logging

@@ -6,26 +6,20 @@ import socket
 import argparse
 
 '''
-#todo
-* add argparse 
-    * for setting log level
-* opt selector 
-* exception handling
-* more verbose logging
-* convert main method to a strict flow control method
+info goes here
 '''
 
-parser = argparse.ArgumentParser(allow_abbrev=False)
-parser.add_argument("-v", "--verbose", help="set logging level to INFO", action="store_true")
-parser.add_argument("-d", "--debug", help="set logging level to DEBUG", action="store_true")
-args = parser.parse_args()
-
-if args.verbose:
-    logging.basicConfig(level=logging.INFO, format=' %(asctime)s - %(levelname)s- %(message)s')
-if args.debug:
-    logging.basicConfig(level=logging.DEBUG, format=' %(asctime)s - %(levelname)s- %(message)s')
 
 def main():
+    parser = argparse.ArgumentParser(allow_abbrev=False)
+    parser.add_argument("-v", "--verbose", help="set logging level to INFO", action="store_true")
+    parser.add_argument("-d", "--debug", help="set logging level to DEBUG", action="store_true")
+    args = parser.parse_args()
+
+    if args.verbose:
+        logging.basicConfig(level=logging.INFO, format=' %(asctime)s - %(levelname)s- %(message)s')
+    if args.debug:
+        logging.basicConfig(level=logging.DEBUG, format=' %(asctime)s - %(levelname)s- %(message)s')
     # pull out arp cache from shell. is there a better way to use socket for this?
     arpCache = str(subprocess.check_output(["arp", "-a"]))
     logging.debug(arpCache)
