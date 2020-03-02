@@ -14,6 +14,9 @@ def main():
     parser = argparse.ArgumentParser(allow_abbrev=False)
     parser.add_argument("-v", "--verbose", help="set logging level to INFO", action="store_true")
     parser.add_argument("-d", "--debug", help="set logging level to DEBUG", action="store_true")
+    parser.add_argument("-l", "--list", help="print list of guest VMs", action="store_true")
+    parser.add_argument("--json", help="print list of guest VMs in JSON format", action="store_true")
+    
     args = parser.parse_args()
 
     if args.verbose:
@@ -25,20 +28,23 @@ def main():
     logging.debug(arpCache)
     logging.debug(re.findall("192\.168\.122\.\d{1,3}", arpCache))
 
-    # Right now this will match any number up to 999, this should be fixed.
-    # Can't assume arp will always return a valid IP
+    # Right now this will match any number up to 999
+    # known limitation
     
     opts = re.findall("192\.168\.122\.\d{1,3}", arpCache) 
     
     if not opts:
         print("error: no KVM hosts running on machine")
-    else:
+    if not args.list:
         connectHost(printOptions(opts))
+    if args.list:
+        [print(f"{ip}") for ip in opts]
 
 
 
 def printOptions(opts):
     hostname = ""
+    output = None
 
     for num, item in enumerate(opts):
         try:
@@ -54,7 +60,6 @@ def printOptions(opts):
         output = opts[selectionIndex]
     except Exception as e:
         print("please enter a valid list index")
-
     
     logging.debug(
                 f"ip: {output}\n"
@@ -66,6 +71,8 @@ def printOptions(opts):
 
 #initiates SSH connection to ip
 def connectHost(ip):
+    if ip is None:
+        return 0
     subprocess.run(["ssh", ip])
 
 if __name__ == '__main__':
