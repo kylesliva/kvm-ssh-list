@@ -34,15 +34,16 @@ def main():
     opts = re.findall("192\.168\.122\.\d{1,3}", arpCache) 
     
     if not opts:
-        print("error: no KVM hosts running on machine")
+        logging.error("error: no KVM hosts running on machine")
+        return
     if not args.list:
-        connectHost(printOptions(opts))
+        connect_host(print_options(opts))
     if args.list:
         [print(f"{ip}") for ip in opts]
 
 
 
-def printOptions(opts):
+def print_options(opts):
     hostname = ""
     output = None
 
@@ -52,8 +53,8 @@ def printOptions(opts):
         except socket.herror:
             logging.info("Warning: cannot resolve KVM guest addresses. Is 192.168.122.1 the primary nameserver?")
             hostname = item
-        print(f"{num}) {hostname}")
-    selectionIndex = int(input("Please select an option from the above list: "))
+        print(f"{num + 1}) {hostname}")
+    selectionIndex = int(input("Please select an option from the above list: ")) - 1
     logging.debug(f"selection index: {selectionIndex}")
 
     try:
@@ -64,15 +65,15 @@ def printOptions(opts):
     logging.debug(
                 f"ip: {output}\n"
                 f"hostname: {hostname}"
-
     )
 
     return output
 
 #initiates SSH connection to ip
-def connectHost(ip):
+def connect_host(ip):
     if ip is None:
-        return 0
+        return
+    print(f"\nConnecting to {ip}\n")
     subprocess.run(["ssh", ip])
 
 if __name__ == '__main__':
