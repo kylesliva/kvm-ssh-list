@@ -4,6 +4,7 @@ import subprocess
 import logging
 import socket
 import argparse
+import ipaddress
 
 '''
 info goes here
@@ -25,13 +26,20 @@ def main():
         logging.basicConfig(level=logging.DEBUG, format=' %(asctime)s - %(levelname)s- %(message)s')
     # pull out arp cache from shell. is there a better way to use socket for this?
     arpCache = str(subprocess.check_output(["arp", "-a"]))
-    logging.debug(arpCache)
-    logging.debug(re.findall("192\.168\.122\.\d{1,3}", arpCache))
 
     # Right now this will match any number up to 999
     # known limitation
     
     opts = re.findall("192\.168\.122\.\d{1,3}", arpCache) 
+    ips = opts[:]
+
+    # Check IP validity
+    for ip in ips:
+        try:
+            ipaddress.ip_address(ip)
+        except ValueError as e:
+            logging.error(f"{ip} does not appear to be a valid IP address")
+            opts.remove(ip)
     
     if not opts:
         logging.error("error: no KVM hosts running on machine")
